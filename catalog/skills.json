@@ -1,0 +1,1405 @@
+{
+  "source": "https://github.com/win4r/MuseAI-Skills",
+  "skill_count": 68,
+  "alias_count": 4,
+  "include_in_prompt": 29,
+  "with_manifest": 37,
+  "with_eval": 12,
+  "groups": {
+    "workflow": [
+      "wide-research",
+      "goals",
+      "skill-creator",
+      "self-awareness",
+      "forget",
+      "muse_db"
+    ],
+    "artifacts": [
+      "artifacts/document",
+      "artifacts/markdown",
+      "artifacts/pdf",
+      "artifacts/presentation",
+      "artifacts/spreadsheet",
+      "artifacts/testing"
+    ],
+    "travel": [
+      "travel-planning",
+      "booking",
+      "places-search",
+      "duffel",
+      "flightaware",
+      "opentable",
+      "ticketmaster"
+    ],
+    "office": [
+      "gmail",
+      "google-calendar",
+      "google-contacts",
+      "google-docs",
+      "google-drive",
+      "google-forms",
+      "google-sheets",
+      "google-slides",
+      "google-tasks",
+      "outlook-calendar",
+      "outlook-contacts",
+      "outlook-mail",
+      "notion",
+      "granola",
+      "muse-mail",
+      "calendly"
+    ],
+    "social": [
+      "facebook-cli",
+      "instagram",
+      "instagram-messages",
+      "messenger",
+      "threads",
+      "threads-messages"
+    ],
+    "commerce": [
+      "shopping",
+      "printify",
+      "plaid"
+    ],
+    "health": [
+      "apple-healthkit",
+      "google-health-connect",
+      "function-health",
+      "healthex",
+      "peloton",
+      "withings"
+    ],
+    "media": [
+      "image-search",
+      "media-library",
+      "spotify",
+      "generate_podcast",
+      "magic-moment",
+      "tts",
+      "voice-design",
+      "voice-selector"
+    ],
+    "devices": [
+      "device-data",
+      "wearable-device-skills",
+      "wearables-comms",
+      "philips-hue",
+      "tessie",
+      "tailscale"
+    ],
+    "product": [
+      "muse-early-access",
+      "muse-feedback",
+      "share-ideas",
+      "subscription-status"
+    ]
+  },
+  "skills": [
+    {
+      "id": "apple-healthkit",
+      "group": "health",
+      "name": "apple_healthkit",
+      "description": "The user's synced Apple Health (HealthKit) data: daily metrics (steps, distance, calories, heart rate, HRV, VO2max), sleep sessions (stages, quality, efficiency), and workouts.",
+      "icon": "",
+      "title": "Apple Health",
+      "include_in_prompt": true,
+      "has_manifest": true,
+      "has_eval": false,
+      "manifest": {
+        "connector": "apple_healthkit",
+        "display_name": "Apple Health",
+        "default_allow": 1,
+        "default_ask": 1
+      },
+      "path": "skills/apple-healthkit/SKILL.md"
+    },
+    {
+      "id": "artifacts/document",
+      "group": "artifacts",
+      "name": "artifact_document",
+      "description": "Create, read, edit, or manipulate Word documents (.docx) and Word templates (.dotx). Use whenever a build task's artifact kind is document with the default docx output, or the task mentions a Word doc, .docx, or .dotx, extracts or reorganizes content from one, inserts or replaces images, does find-and-replace in one, or works with tracked changes (redlines) or comments. Covers python-docx generation, raw OOXML editing of existing files, document structure and formatting, and render verification. Not for PDFs, spreadsheets, or Google Docs.",
+      "icon": "",
+      "title": "",
+      "include_in_prompt": false,
+      "has_manifest": false,
+      "has_eval": false,
+      "manifest": null,
+      "path": "skills/artifacts/document/SKILL.md"
+    },
+    {
+      "id": "artifacts/markdown",
+      "group": "artifacts",
+      "name": "artifact_markdown",
+      "description": "Build or revise a plain markdown file (md) deliverable such as notes, a README, meeting minutes, documentation, or text the user will edit or paste elsewhere. Use whenever a build task's artifact kind is markdown. Covers markdown formatting conventions and read-back verification.",
+      "icon": "",
+      "title": "",
+      "include_in_prompt": false,
+      "has_manifest": false,
+      "has_eval": false,
+      "manifest": null,
+      "path": "skills/artifacts/markdown/SKILL.md"
+    },
+    {
+      "id": "artifacts/pdf",
+      "group": "artifacts",
+      "name": "artifact_pdf",
+      "description": "Build, revise, or manipulate a fixed-layout PDF (report, guide, one-pager, printable document). Use whenever a build task's artifact kind is pdf, a document build's output format is pdf, or the task reads, merges, splits, crops, or fills an existing PDF, including fillable AcroForms. Covers authoring the print-CSS HTML source, rendering, the geometry and validation gates, existing-PDF manipulation and form filling, and delivery under workspace/your_files.",
+      "icon": "",
+      "title": "",
+      "include_in_prompt": false,
+      "has_manifest": false,
+      "has_eval": false,
+      "manifest": null,
+      "path": "skills/artifacts/pdf/SKILL.md"
+    },
+    {
+      "id": "artifacts/presentation",
+      "group": "artifacts",
+      "name": "artifact_presentation",
+      "description": "Build or revise a slide deck (pptx by default; pdf or html on request). Use whenever a build task's artifact kind is presentation, or the user asks for a deck, slides, or a presentation. Covers per-slide HTML authoring, the StylePlan theme system, font embedding, deck assembly, render gates, and the PPTX export.",
+      "icon": "",
+      "title": "",
+      "include_in_prompt": false,
+      "has_manifest": false,
+      "has_eval": false,
+      "manifest": null,
+      "path": "skills/artifacts/presentation/SKILL.md"
+    },
+    {
+      "id": "artifacts/spreadsheet",
+      "group": "artifacts",
+      "name": "artifact_spreadsheet",
+      "description": "Create, read, edit, fix, or clean spreadsheet files (.xlsx, .xlsm, .csv, .tsv). Use whenever a build task's artifact kind is spreadsheet, or the task names a spreadsheet file and wants something done to it or produced from it, including restructuring messy tabular data into a proper workbook. Covers openpyxl generation, formulas and recalculation, editing existing workbooks, and the validation gates. Not for tasks whose deliverable is a document, report, or web page that merely contains a table.",
+      "icon": "",
+      "title": "",
+      "include_in_prompt": false,
+      "has_manifest": false,
+      "has_eval": false,
+      "manifest": null,
+      "path": "skills/artifacts/spreadsheet/SKILL.md"
+    },
+    {
+      "id": "artifacts/testing",
+      "group": "artifacts",
+      "name": "artifact_testing",
+      "description": "Verify an artifact before delivering it - file deliverables (pdf, pptx, docx, xlsx, csv) and web artifacts alike. Use whenever a build is about to return a link, or a build task asks for validation, QA, or a visual check. Covers the per-kind gate scripts, render-and-look verification, and leftover-placeholder scanning.",
+      "icon": "",
+      "title": "",
+      "include_in_prompt": false,
+      "has_manifest": false,
+      "has_eval": false,
+      "manifest": null,
+      "path": "skills/artifacts/testing/SKILL.md"
+    },
+    {
+      "id": "booking",
+      "group": "travel",
+      "name": "booking",
+      "description": "Primary entry point for direct flight, hotel, restaurant, or event-ticket transactions and for bounded live availability checks delegated by Travel Planning. Always use before provider-specific skills or browser work when the user asks to find live availability or prices, compare bookable options, book, or continue an active booking. Do not use for trip planning itself, broad inspiration, opening hours, schedules, flight status, or other factual questions without transaction intent.",
+      "icon": "",
+      "title": "",
+      "include_in_prompt": true,
+      "has_manifest": false,
+      "has_eval": true,
+      "manifest": null,
+      "path": "skills/booking/SKILL.md"
+    },
+    {
+      "id": "calendly",
+      "group": "office",
+      "name": "calendly",
+      "description": "View Calendly events and event types, and manage scheduling data using the Calendly CLI.",
+      "icon": "calendly",
+      "title": "",
+      "include_in_prompt": false,
+      "has_manifest": true,
+      "has_eval": false,
+      "manifest": {
+        "connector": "calendly",
+        "display_name": "Calendly",
+        "default_allow": 1,
+        "default_ask": 1
+      },
+      "path": "skills/calendly/SKILL.md"
+    },
+    {
+      "id": "device-data",
+      "group": "devices",
+      "name": "device_data",
+      "description": "Read cached contacts and calendar events from Muse storage. Delete Muse's local copy of either source without modifying paired devices.",
+      "icon": "",
+      "title": "Device Data",
+      "include_in_prompt": true,
+      "has_manifest": false,
+      "has_eval": false,
+      "manifest": null,
+      "path": "skills/device-data/SKILL.md"
+    },
+    {
+      "id": "duffel",
+      "group": "travel",
+      "name": "duffel",
+      "description": "Use Duffel to search, book, pay for, or manage flights. Use Duffel to monitor an already booked flight's fare when the user directly asks for ongoing price monitoring.",
+      "icon": "",
+      "title": "",
+      "include_in_prompt": false,
+      "has_manifest": true,
+      "has_eval": true,
+      "manifest": {
+        "connector": "duffel",
+        "display_name": "Duffel Flight Booking",
+        "default_allow": 1,
+        "default_ask": 1
+      },
+      "path": "skills/duffel/SKILL.md"
+    },
+    {
+      "id": "facebook-cli",
+      "group": "social",
+      "name": "facebook_cli",
+      "description": "Use when the user provides a Facebook URL or asks to read personal posts, comments, reactions, friends, timelines, profiles, stories, feeds, groups, events, or saved items, or to discover public events happening near a place, nearby, or in a local area on a date, or to create, edit, publish, or delete their own Marketplace listings. To find, browse, or buy Marketplace listings, use shopping instead.",
+      "icon": "facebook",
+      "title": "Facebook",
+      "include_in_prompt": true,
+      "has_manifest": true,
+      "has_eval": false,
+      "manifest": {
+        "connector": "facebook_cli",
+        "display_name": "Facebook",
+        "default_allow": 2,
+        "default_ask": 1
+      },
+      "path": "skills/facebook-cli/SKILL.md"
+    },
+    {
+      "id": "flightaware",
+      "group": "travel",
+      "name": "flightaware",
+      "description": "Use for questions about a specific flight’s departure or arrival time, including “when’s my flight?” and confirmation of remembered times, plus flight status, delays, and cancellations. Verify the exact dated flight before answering; memory identifies the itinerary but does not verify its current schedule. Use FlightAware to monitor operational changes for an upcoming booked flight when the user directly asks for ongoing monitoring.",
+      "icon": "",
+      "title": "FlightAware AeroAPI",
+      "include_in_prompt": true,
+      "has_manifest": true,
+      "has_eval": true,
+      "manifest": {
+        "connector": "flightaware",
+        "display_name": "FlightAware",
+        "default_allow": 2,
+        "default_ask": 1
+      },
+      "path": "skills/flightaware/SKILL.md"
+    },
+    {
+      "id": "forget",
+      "group": "workflow",
+      "name": "forget",
+      "description": "Remove a personal fact, preference, relationship detail, topic, or prior event from Muse's active memory and stop existing copies or automations from bringing it back. Use for explicit requests such as 'forget that', 'don't remember this about me', or 'remove that from your memory'. Do not use when 'forget it' merely means cancel the current task.",
+      "icon": "",
+      "title": "",
+      "include_in_prompt": true,
+      "has_manifest": false,
+      "has_eval": false,
+      "manifest": null,
+      "path": "skills/forget/SKILL.md"
+    },
+    {
+      "id": "function-health",
+      "group": "health",
+      "name": "function_health",
+      "description": "Retrieve lab biomarker results and clinician notes from Function Health.",
+      "icon": "function_health",
+      "title": "",
+      "include_in_prompt": false,
+      "has_manifest": true,
+      "has_eval": false,
+      "manifest": {
+        "connector": "function_health",
+        "display_name": "Function Health",
+        "default_allow": 1,
+        "default_ask": 0
+      },
+      "path": "skills/function-health/SKILL.md"
+    },
+    {
+      "id": "generate_podcast",
+      "group": "media",
+      "name": "generate_podcast",
+      "description": "Compose and deliver audio content: a podcast episode, briefing, or narrated summary, with one or more voices, as an MP3. For reading supplied text aloud verbatim, use tts.",
+      "icon": "",
+      "title": "",
+      "include_in_prompt": true,
+      "has_manifest": false,
+      "has_eval": false,
+      "manifest": null,
+      "path": "skills/generate_podcast/SKILL.md"
+    },
+    {
+      "id": "gmail",
+      "group": "office",
+      "name": "gmail",
+      "description": "Work with the user's Gmail: search, read threads, draft, send, reply, forward, unsubscribe from mailing lists, manage labels, and open attachments.",
+      "icon": "gmail",
+      "title": "",
+      "include_in_prompt": true,
+      "has_manifest": true,
+      "has_eval": true,
+      "manifest": {
+        "connector": "gmail",
+        "display_name": "Gmail",
+        "default_allow": 6,
+        "default_ask": 2
+      },
+      "path": "skills/gmail/SKILL.md"
+    },
+    {
+      "id": "goals",
+      "group": "workflow",
+      "name": "goals",
+      "description": "Guidance for helping users create and accomplish goals. Read it before you create a goal for the user when no goal-creation contract is in context, and whenever you help with an existing goal. A Goals-tab creation turn already carries that contract and does not need this skill.",
+      "icon": "",
+      "title": "",
+      "include_in_prompt": true,
+      "has_manifest": false,
+      "has_eval": false,
+      "manifest": null,
+      "path": "skills/goals/SKILL.md"
+    },
+    {
+      "id": "google-calendar",
+      "group": "office",
+      "name": "google_calendar",
+      "description": "Work with the user's Google Calendar: agenda views, event details, and scheduling changes.",
+      "icon": "google_calendar",
+      "title": "",
+      "include_in_prompt": true,
+      "has_manifest": true,
+      "has_eval": true,
+      "manifest": {
+        "connector": "google_calendar",
+        "display_name": "Google Calendar",
+        "default_allow": 4,
+        "default_ask": 1
+      },
+      "path": "skills/google-calendar/SKILL.md"
+    },
+    {
+      "id": "google-contacts",
+      "group": "office",
+      "name": "google_contacts",
+      "description": "Search, view, create, update, and delete the user's Google Contacts.",
+      "icon": "google_contacts",
+      "title": "",
+      "include_in_prompt": false,
+      "has_manifest": true,
+      "has_eval": true,
+      "manifest": {
+        "connector": "google_contacts",
+        "display_name": "Google Contacts",
+        "default_allow": 2,
+        "default_ask": 0
+      },
+      "path": "skills/google-contacts/SKILL.md"
+    },
+    {
+      "id": "google-docs",
+      "group": "office",
+      "name": "google_docs",
+      "description": "Read, create, and edit the user's Google Docs.",
+      "icon": "google_docs",
+      "title": "",
+      "include_in_prompt": false,
+      "has_manifest": true,
+      "has_eval": false,
+      "manifest": {
+        "connector": "google_docs",
+        "display_name": "Google Docs",
+        "default_allow": 3,
+        "default_ask": 1
+      },
+      "path": "skills/google-docs/SKILL.md"
+    },
+    {
+      "id": "google-drive",
+      "group": "office",
+      "name": "google_drive",
+      "description": "Work with the user's Google Drive: files, folders, uploads, downloads, and sharing.",
+      "icon": "google_drive",
+      "title": "",
+      "include_in_prompt": false,
+      "has_manifest": true,
+      "has_eval": true,
+      "manifest": {
+        "connector": "google_drive",
+        "display_name": "Google Drive",
+        "default_allow": 5,
+        "default_ask": 1
+      },
+      "path": "skills/google-drive/SKILL.md"
+    },
+    {
+      "id": "google-forms",
+      "group": "office",
+      "name": "google_forms",
+      "description": "Read, create, and update the user's Google Forms, and read responses.",
+      "icon": "google_forms",
+      "title": "",
+      "include_in_prompt": false,
+      "has_manifest": true,
+      "has_eval": false,
+      "manifest": {
+        "connector": "google_forms",
+        "display_name": "Google Forms",
+        "default_allow": 3,
+        "default_ask": 1
+      },
+      "path": "skills/google-forms/SKILL.md"
+    },
+    {
+      "id": "google-health-connect",
+      "group": "health",
+      "name": "google_health_connect",
+      "description": "The user's synced Google Health Connect data from their Android device: daily metrics (steps, distance, calories, heart rate, HRV, VO2max), sleep sessions (stages, quality, efficiency), and workouts.",
+      "icon": "",
+      "title": "Health Connect",
+      "include_in_prompt": true,
+      "has_manifest": true,
+      "has_eval": false,
+      "manifest": {
+        "connector": "google_health_connect",
+        "display_name": "Health Connect",
+        "default_allow": 1,
+        "default_ask": 1
+      },
+      "path": "skills/google-health-connect/SKILL.md"
+    },
+    {
+      "id": "google-sheets",
+      "group": "office",
+      "name": "google_sheets",
+      "description": "Read, write, and manage the user's Google Sheets.",
+      "icon": "google_sheets",
+      "title": "",
+      "include_in_prompt": false,
+      "has_manifest": true,
+      "has_eval": false,
+      "manifest": {
+        "connector": "google_sheets",
+        "display_name": "Google Sheets",
+        "default_allow": 5,
+        "default_ask": 1
+      },
+      "path": "skills/google-sheets/SKILL.md"
+    },
+    {
+      "id": "google-slides",
+      "group": "office",
+      "name": "google_slides",
+      "description": "Read, create, and edit the user's Google Slides presentations.",
+      "icon": "google_slides",
+      "title": "",
+      "include_in_prompt": false,
+      "has_manifest": true,
+      "has_eval": false,
+      "manifest": {
+        "connector": "google_slides",
+        "display_name": "Google Slides",
+        "default_allow": 3,
+        "default_ask": 1
+      },
+      "path": "skills/google-slides/SKILL.md"
+    },
+    {
+      "id": "google-tasks",
+      "group": "office",
+      "name": "google_tasks",
+      "description": "Manage the user's Google Tasks: lists, task details, creation, updates, and completion.",
+      "icon": "google_tasks",
+      "title": "",
+      "include_in_prompt": false,
+      "has_manifest": true,
+      "has_eval": true,
+      "manifest": {
+        "connector": "google_tasks",
+        "display_name": "Google Tasks",
+        "default_allow": 2,
+        "default_ask": 0
+      },
+      "path": "skills/google-tasks/SKILL.md"
+    },
+    {
+      "id": "granola",
+      "group": "office",
+      "name": "granola",
+      "description": "Search and read Granola meeting notes and transcripts through Granola's OAuth-backed MCP server.",
+      "icon": "granola",
+      "title": "",
+      "include_in_prompt": false,
+      "has_manifest": true,
+      "has_eval": false,
+      "manifest": {
+        "connector": "granola",
+        "display_name": "Granola",
+        "default_allow": 1,
+        "default_ask": 0
+      },
+      "path": "skills/granola/SKILL.md"
+    },
+    {
+      "id": "healthex",
+      "group": "health",
+      "name": "healthex",
+      "description": "Use to connect HealthEx and ask questions about your medications, lab results, and other health records.",
+      "icon": "healthex",
+      "title": "HealthEx",
+      "include_in_prompt": false,
+      "has_manifest": true,
+      "has_eval": false,
+      "manifest": {
+        "connector": "healthex",
+        "display_name": "HealthEx",
+        "default_allow": 1,
+        "default_ask": 0
+      },
+      "path": "skills/healthex/SKILL.md"
+    },
+    {
+      "id": "image-search",
+      "group": "media",
+      "name": "image_search",
+      "description": "Search the web by text query for image URLs and source pages for feeds, artifacts, and visual references. Does not identify a supplied image or person.",
+      "icon": "",
+      "title": "",
+      "include_in_prompt": true,
+      "has_manifest": false,
+      "has_eval": false,
+      "manifest": null,
+      "path": "skills/image-search/SKILL.md"
+    },
+    {
+      "id": "instagram",
+      "group": "social",
+      "name": "instagram",
+      "description": "Answer questions about Instagram posts and reels, including links the user shares, using post context, media descriptions, and visual inspection when needed. Read profiles, followers, posts, comments, likes, stories, feed, saved content, and insights. Manage feed interests and profile details, and publish stories, reels, posts, or carousels when requested.",
+      "icon": "instagram",
+      "title": "",
+      "include_in_prompt": true,
+      "has_manifest": true,
+      "has_eval": false,
+      "manifest": {
+        "connector": "instagram",
+        "display_name": "Instagram",
+        "default_allow": 3,
+        "default_ask": 1
+      },
+      "path": "skills/instagram/SKILL.md"
+    },
+    {
+      "id": "instagram-messages",
+      "group": "social",
+      "name": "instagram_messages",
+      "description": "Use this to interact with the user's Instagram messages. Read inboxes, threads, top recipients, filtered inbox views, DM search results, and send messages through `instagram-messages-cli`.",
+      "icon": "instagram",
+      "title": "",
+      "include_in_prompt": false,
+      "has_manifest": true,
+      "has_eval": false,
+      "manifest": {
+        "connector": "instagram_messages",
+        "display_name": "Instagram Messages",
+        "default_allow": 1,
+        "default_ask": 1
+      },
+      "path": "skills/instagram-messages/SKILL.md"
+    },
+    {
+      "id": "magic-moment",
+      "group": "media",
+      "name": "magic-moment",
+      "description": "Make a \"magic moment\" video — turn a creator's talking-head recording into a vertical video preserving the source narration where their Muse story replays through artifacts and brief exchanges synced to their voiceover — bubbles, typing, emoji reactions, real widgets and pages, message sounds, closing Muse lockup finisher. Use whenever a user with talking-head or selfie footage wants it turned into a shareable clip of their Muse story — \"make a magic moment\", \"turn this video of me into...\", \"add the chat over my video\", \"retell what Muse did for me\" — even if they never say the words \"magic moment\".",
+      "icon": "",
+      "title": "",
+      "include_in_prompt": false,
+      "has_manifest": false,
+      "has_eval": false,
+      "manifest": null,
+      "path": "skills/magic-moment/SKILL.md"
+    },
+    {
+      "id": "media-library",
+      "group": "media",
+      "name": "media_library",
+      "description": "Search and inspect the user's photo library, including connected device galleries. Use for photo requests and whenever a photo could ground or personalize a response; lookups of uploaded photos are cheap, so check opportunistically and move on if nothing fits.",
+      "icon": "",
+      "title": "",
+      "include_in_prompt": true,
+      "has_manifest": false,
+      "has_eval": false,
+      "manifest": null,
+      "path": "skills/media-library/SKILL.md"
+    },
+    {
+      "id": "messenger",
+      "group": "social",
+      "name": "messenger_read",
+      "description": "Work with the user's Messenger account: read call history; read and search contacts; read, search, and summarize conversations; send, react to, unsend, or edit messages; and message Marketplace listing threads.",
+      "icon": "messenger",
+      "title": "Messenger",
+      "include_in_prompt": true,
+      "has_manifest": true,
+      "has_eval": false,
+      "manifest": {
+        "connector": "messenger_read",
+        "display_name": "Messenger",
+        "default_allow": 1,
+        "default_ask": 1
+      },
+      "path": "skills/messenger/SKILL.md"
+    },
+    {
+      "id": "muse-early-access",
+      "group": "product",
+      "name": "muse_early_access",
+      "description": "Use for questions about Muse's general early access program, requests to join it, checking or withdrawing a join request, and admission updates.",
+      "icon": "",
+      "title": "Muse early access",
+      "include_in_prompt": true,
+      "has_manifest": false,
+      "has_eval": false,
+      "manifest": null,
+      "path": "skills/muse-early-access/SKILL.md"
+    },
+    {
+      "id": "muse-feedback",
+      "group": "product",
+      "name": "muse-feedback",
+      "description": "Use for feedback and feature requests to the Muse team. Whenever your response tells the user you can't do a specific thing they wanted, or accepts them giving up on one, offer once to file feedback in that response. This covers missing integrations you can't do yourself, capabilities you lack, and tasks that keep failing at a specific point. File only on their go-ahead. Also use when asked to send, view, check, or withdraw feedback.",
+      "icon": "",
+      "title": "Muse feedback",
+      "include_in_prompt": true,
+      "has_manifest": false,
+      "has_eval": false,
+      "manifest": null,
+      "path": "skills/muse-feedback/SKILL.md"
+    },
+    {
+      "id": "muse-mail",
+      "group": "office",
+      "name": "muse_mail",
+      "description": "Manage Muse Mail. Use this skill for Muse Mail, mail forwarded to the mailbox, or the main agent's name plus mail. Route the user's inbox and generic sends to the user's account. Check connected accounts for broad mail questions.",
+      "icon": "",
+      "title": "",
+      "include_in_prompt": true,
+      "has_manifest": false,
+      "has_eval": false,
+      "manifest": null,
+      "path": "skills/muse-mail/SKILL.md"
+    },
+    {
+      "id": "muse_db",
+      "group": "workflow",
+      "name": "muse_db",
+      "description": "Inspect database-backed Muse records for diagnosis and cross-table tracing when purpose-built product tools do not expose the needed state.",
+      "icon": "",
+      "title": "",
+      "include_in_prompt": false,
+      "has_manifest": false,
+      "has_eval": false,
+      "manifest": null,
+      "path": "skills/muse_db/SKILL.md"
+    },
+    {
+      "id": "notion",
+      "group": "office",
+      "name": "notion",
+      "description": "Search, read, create, and update Notion pages via the Notion MCP.",
+      "icon": "notion",
+      "title": "",
+      "include_in_prompt": false,
+      "has_manifest": true,
+      "has_eval": false,
+      "manifest": {
+        "connector": "notion",
+        "display_name": "Notion",
+        "default_allow": 1,
+        "default_ask": 1
+      },
+      "path": "skills/notion/SKILL.md"
+    },
+    {
+      "id": "opentable",
+      "group": "travel",
+      "name": "opentable",
+      "description": "Find restaurants on OpenTable, check availability, and make, change, or cancel reservations. Use for restaurant booking and live reservation data.",
+      "icon": "opentable",
+      "title": "OpenTable",
+      "include_in_prompt": false,
+      "has_manifest": true,
+      "has_eval": true,
+      "manifest": {
+        "connector": "opentable",
+        "display_name": "OpenTable",
+        "default_allow": 2,
+        "default_ask": 1
+      },
+      "path": "skills/opentable/SKILL.md"
+    },
+    {
+      "id": "outlook-calendar",
+      "group": "office",
+      "name": "outlook_calendar",
+      "description": "View, create, update, and delete events in the user's Outlook Calendar.",
+      "icon": "outlook_calendar",
+      "title": "",
+      "include_in_prompt": false,
+      "has_manifest": true,
+      "has_eval": false,
+      "manifest": {
+        "connector": "outlook_calendar",
+        "display_name": "Outlook Calendar",
+        "default_allow": 4,
+        "default_ask": 1
+      },
+      "path": "skills/outlook-calendar/SKILL.md"
+    },
+    {
+      "id": "outlook-contacts",
+      "group": "office",
+      "name": "outlook_contacts",
+      "description": "List, search, create, update, and delete contacts in the user's Outlook account.",
+      "icon": "outlook_contacts",
+      "title": "",
+      "include_in_prompt": false,
+      "has_manifest": true,
+      "has_eval": false,
+      "manifest": {
+        "connector": "outlook_contacts",
+        "display_name": "Outlook Contacts",
+        "default_allow": 2,
+        "default_ask": 0
+      },
+      "path": "skills/outlook-contacts/SKILL.md"
+    },
+    {
+      "id": "outlook-mail",
+      "group": "office",
+      "name": "outlook_mail",
+      "description": "Read, search, send, reply to, and delete messages in the user's Outlook Mail.",
+      "icon": "outlook_mail",
+      "title": "",
+      "include_in_prompt": false,
+      "has_manifest": true,
+      "has_eval": false,
+      "manifest": {
+        "connector": "outlook_mail",
+        "display_name": "Outlook Mail",
+        "default_allow": 3,
+        "default_ask": 1
+      },
+      "path": "skills/outlook-mail/SKILL.md"
+    },
+    {
+      "id": "peloton",
+      "group": "health",
+      "name": "peloton",
+      "description": "Connect to Peloton to browse fitness classes, check schedules, and book workouts.",
+      "icon": "peloton",
+      "title": "",
+      "include_in_prompt": false,
+      "has_manifest": true,
+      "has_eval": false,
+      "manifest": {
+        "connector": "peloton",
+        "display_name": "Peloton",
+        "default_allow": 2,
+        "default_ask": 0
+      },
+      "path": "skills/peloton/SKILL.md"
+    },
+    {
+      "id": "philips-hue",
+      "group": "devices",
+      "name": "philips_hue",
+      "description": "Control Philips Hue smart lights, rooms, scenes, and devices via the Hue Remote API v2.",
+      "icon": "hue_lights",
+      "title": "",
+      "include_in_prompt": false,
+      "has_manifest": true,
+      "has_eval": false,
+      "manifest": {
+        "connector": "philips_hue",
+        "display_name": "Philips Hue",
+        "default_allow": 2,
+        "default_ask": 0
+      },
+      "path": "skills/philips-hue/SKILL.md"
+    },
+    {
+      "id": "places-search",
+      "group": "travel",
+      "name": "places_search",
+      "description": "Find, compare, and share details on physical places near the user or in a specified area, including restaurants, cafes, bars, hotels, parks, attractions, shops, and businesses with local services. Not for itineraries, choosing a city or region, dated events or showtimes, or directions.",
+      "icon": "",
+      "title": "Places Search",
+      "include_in_prompt": false,
+      "has_manifest": false,
+      "has_eval": true,
+      "manifest": null,
+      "path": "skills/places-search/SKILL.md"
+    },
+    {
+      "id": "plaid",
+      "group": "commerce",
+      "name": "plaid",
+      "description": "Use to connect Plaid and read linked financial accounts: metadata, balances, transactions, recurring transactions, liabilities, and investments.",
+      "icon": "plaid",
+      "title": "Finances (Plaid)",
+      "include_in_prompt": true,
+      "has_manifest": true,
+      "has_eval": true,
+      "manifest": {
+        "connector": "plaid",
+        "display_name": "Finances (Plaid)",
+        "default_allow": 2,
+        "default_ask": 0
+      },
+      "path": "skills/plaid/SKILL.md"
+    },
+    {
+      "id": "printify",
+      "group": "commerce",
+      "name": "printify",
+      "description": "Use Printify to browse catalog data, manage shops and products, and review or create orders.",
+      "icon": "printify",
+      "title": "",
+      "include_in_prompt": false,
+      "has_manifest": true,
+      "has_eval": false,
+      "manifest": {
+        "connector": "printify",
+        "display_name": "Printify",
+        "default_allow": 2,
+        "default_ask": 1
+      },
+      "path": "skills/printify/SKILL.md"
+    },
+    {
+      "id": "self-awareness",
+      "group": "workflow",
+      "name": "self_awareness",
+      "description": "Ground self-referential answers in the agent's actual filesystem. Use when the user asks who the agent is, what it can do, what it knows, what it remembers, what it has built, what services are connected, or what rules it follows.",
+      "icon": "",
+      "title": "",
+      "include_in_prompt": false,
+      "has_manifest": false,
+      "has_eval": false,
+      "manifest": null,
+      "path": "skills/self-awareness/SKILL.md"
+    },
+    {
+      "id": "share-ideas",
+      "group": "product",
+      "name": "share_ideas",
+      "description": "Publish a reusable native Muse Idea with idea.share when the user explicitly asks to share or publish an Idea or asks for a muse.ai/ideas link. Never offer it unprompted. Not for pages or write-ups, sending a result to someone, social posts, or sharing an artifact.",
+      "icon": "",
+      "title": "Share ideas",
+      "include_in_prompt": true,
+      "has_manifest": false,
+      "has_eval": false,
+      "manifest": null,
+      "path": "skills/share-ideas/SKILL.md"
+    },
+    {
+      "id": "shopping",
+      "group": "commerce",
+      "name": "shopping",
+      "description": "Use for any product or shopping question: find, reverse image search, shopping Instagram/Marketplace links, buy, compare, or evaluate real products with prices, images, and product page URLs, including buying or browsing Facebook Marketplace listings. Use when presenting shopping search results from any source. For shopping intent, load this skill first before any other skills.",
+      "icon": "",
+      "title": "",
+      "include_in_prompt": true,
+      "has_manifest": false,
+      "has_eval": false,
+      "manifest": null,
+      "path": "skills/shopping/SKILL.md"
+    },
+    {
+      "id": "skill-creator",
+      "group": "workflow",
+      "name": "skill_creator",
+      "description": "Create or update a workspace skill: its description, structure, instructions, and supporting files.",
+      "icon": "",
+      "title": "",
+      "include_in_prompt": true,
+      "has_manifest": false,
+      "has_eval": false,
+      "manifest": null,
+      "path": "skills/skill-creator/SKILL.md"
+    },
+    {
+      "id": "spotify",
+      "group": "media",
+      "name": "spotify",
+      "description": "Discover, search, and manage Spotify music, podcasts, and playlists, including deleting shows or episodes you created with Save to Spotify.",
+      "icon": "spotify",
+      "title": "",
+      "include_in_prompt": true,
+      "has_manifest": true,
+      "has_eval": false,
+      "manifest": {
+        "connector": "spotify",
+        "display_name": "Spotify",
+        "default_allow": 3,
+        "default_ask": 1
+      },
+      "path": "skills/spotify/SKILL.md"
+    },
+    {
+      "id": "subscription-status",
+      "group": "product",
+      "name": "subscription_status",
+      "description": "Answer questions about the user's Muse subscription, account or plan, current tier, usage, credits, remaining balance, quota, usage or rate limits, billing, reset timing, available subscription tiers, plan prices and costs, upgrades, or the subscription product catalog.",
+      "icon": "",
+      "title": "",
+      "include_in_prompt": true,
+      "has_manifest": false,
+      "has_eval": false,
+      "manifest": null,
+      "path": "skills/subscription-status/SKILL.md"
+    },
+    {
+      "id": "tailscale",
+      "group": "devices",
+      "name": "tailscale",
+      "description": "Set up Muse's built-in Tailscale connector, join a tailnet or Headscale network, check status, and reach private machines through the TCP tunnel proxy. Read for Tailscale, VPN, MagicDNS, network egress, exit-node, or browser routing questions and supported limits.",
+      "icon": "",
+      "title": "Tailscale",
+      "include_in_prompt": false,
+      "has_manifest": false,
+      "has_eval": false,
+      "manifest": null,
+      "path": "skills/tailscale/SKILL.md"
+    },
+    {
+      "id": "tessie",
+      "group": "devices",
+      "name": "tessie",
+      "description": "Monitor a Tesla vehicle, inspect live state, and run explicit Tessie command endpoints.",
+      "icon": "tessie",
+      "title": "",
+      "include_in_prompt": false,
+      "has_manifest": true,
+      "has_eval": false,
+      "manifest": {
+        "connector": "tessie",
+        "display_name": "Tessie",
+        "default_allow": 6,
+        "default_ask": 1
+      },
+      "path": "skills/tessie/SKILL.md"
+    },
+    {
+      "id": "threads",
+      "group": "social",
+      "name": "threads",
+      "description": "Read and manage the user's Threads account: profile, posts, feed, saved posts, activity, insights, social graph, search, trends, and a specific post by URL or ID. Can tune feed ranking and publish posts on request.",
+      "icon": "threads",
+      "title": "",
+      "include_in_prompt": true,
+      "has_manifest": true,
+      "has_eval": false,
+      "manifest": {
+        "connector": "threads",
+        "display_name": "Threads",
+        "default_allow": 2,
+        "default_ask": 1
+      },
+      "path": "skills/threads/SKILL.md"
+    },
+    {
+      "id": "threads-messages",
+      "group": "social",
+      "name": "threads_messages",
+      "description": "Use this to interact with the user's Threads messages: read inboxes and message threads, and send messages through `threads-messages-cli`.",
+      "icon": "threads",
+      "title": "",
+      "include_in_prompt": false,
+      "has_manifest": true,
+      "has_eval": false,
+      "manifest": {
+        "connector": "threads_messages",
+        "display_name": "Threads Messages",
+        "default_allow": 1,
+        "default_ask": 1
+      },
+      "path": "skills/threads-messages/SKILL.md"
+    },
+    {
+      "id": "ticketmaster",
+      "group": "travel",
+      "name": "ticketmaster",
+      "description": "Search Ticketmaster events and seats with pricing. Returns Buy-now links to Ticketmaster checkout; it cannot complete a purchase itself.",
+      "icon": "",
+      "title": "",
+      "include_in_prompt": false,
+      "has_manifest": true,
+      "has_eval": false,
+      "manifest": {
+        "connector": "ticketmaster",
+        "display_name": "Ticketmaster",
+        "default_allow": 1,
+        "default_ask": 0
+      },
+      "path": "skills/ticketmaster/SKILL.md"
+    },
+    {
+      "id": "travel-planning",
+      "group": "travel",
+      "name": "travel_planning",
+      "description": "Use this skill when an active or proposed trip needs planning, logistics, feasibility, entry or transit checks, itinerary work, or investigation of an airport process, immigration, ground transport, a transfer, or fast-track service, even for a narrow question with no booking intent. Route a bounded flight, hotel, restaurant, event, or other item ready for live availability or booking directly to Booking. Skip this skill for a stable travel fact alone or flight status.",
+      "icon": "",
+      "title": "",
+      "include_in_prompt": true,
+      "has_manifest": false,
+      "has_eval": true,
+      "manifest": null,
+      "path": "skills/travel-planning/SKILL.md"
+    },
+    {
+      "id": "tts",
+      "group": "media",
+      "name": "tts",
+      "description": "Turn supplied text into spoken audio, single or multi-speaker. For composed audio content (a podcast, briefing, or narrated summary), use podcast.",
+      "icon": "",
+      "title": "",
+      "include_in_prompt": true,
+      "has_manifest": true,
+      "has_eval": false,
+      "manifest": {
+        "connector": "tts",
+        "display_name": "",
+        "default_allow": 0,
+        "default_ask": 0
+      },
+      "path": "skills/tts/SKILL.md"
+    },
+    {
+      "id": "voice-design",
+      "group": "media",
+      "name": "voice_design",
+      "description": "Choose or design a new speaking voice when the user asks for a new, different, custom, invented, or generated voice.",
+      "icon": "",
+      "title": "",
+      "include_in_prompt": false,
+      "has_manifest": false,
+      "has_eval": false,
+      "manifest": null,
+      "path": "skills/voice-design/SKILL.md"
+    },
+    {
+      "id": "voice-selector",
+      "group": "media",
+      "name": "voice_selector",
+      "description": "Provides the static system voice catalog used by Jarvis. It does not define a user-facing workflow.",
+      "icon": "",
+      "title": "",
+      "include_in_prompt": false,
+      "has_manifest": false,
+      "has_eval": false,
+      "manifest": null,
+      "path": "skills/voice-selector/SKILL.md"
+    },
+    {
+      "id": "wearable-device-skills",
+      "group": "devices",
+      "name": "wearable_device_skills",
+      "description": "Use when the user asks to discover, inspect, or invoke an agentic capability dynamically published by a paired phone or wearable, including device controls, app actions, camera or media actions, and smart-home actions.",
+      "icon": "",
+      "title": "Wearable Device Skills",
+      "include_in_prompt": true,
+      "has_manifest": false,
+      "has_eval": false,
+      "manifest": null,
+      "path": "skills/wearable-device-skills/SKILL.md"
+    },
+    {
+      "id": "wearables-comms",
+      "group": "devices",
+      "name": "wearables_comms",
+      "description": ">-",
+      "icon": "",
+      "title": "Wearables Calls and Messages",
+      "include_in_prompt": true,
+      "has_manifest": false,
+      "has_eval": false,
+      "manifest": null,
+      "path": "skills/wearables-comms/SKILL.md"
+    },
+    {
+      "id": "wide-research",
+      "group": "workflow",
+      "name": "wide_research",
+      "description": "Use when the user needs broad parallel research across many independent inputs with a shared output schema.",
+      "icon": "",
+      "title": "",
+      "include_in_prompt": false,
+      "has_manifest": false,
+      "has_eval": false,
+      "manifest": null,
+      "path": "skills/wide-research/SKILL.md"
+    },
+    {
+      "id": "withings",
+      "group": "health",
+      "name": "withings",
+      "description": "Use when linking Withings or reading Withings body measurements, activity, sleep, workout, heart, and intraday data.",
+      "icon": "withings",
+      "title": "",
+      "include_in_prompt": false,
+      "has_manifest": true,
+      "has_eval": false,
+      "manifest": {
+        "connector": "withings",
+        "display_name": "Withings",
+        "default_allow": 1,
+        "default_ask": 0
+      },
+      "path": "skills/withings/SKILL.md"
+    }
+  ],
+  "aliases": {
+    "facebook": "facebook-cli",
+    "meta-threads": "threads",
+    "podcast": "generate_podcast",
+    "voice-calls": "voice-selector"
+  },
+  "availability": [
+    {
+      "config_key": "calendly",
+      "skill_id": "calendly",
+      "status": "available"
+    },
+    {
+      "config_key": "facebook_cli",
+      "skill_id": "facebook-cli",
+      "status": "available"
+    },
+    {
+      "config_key": "function_health",
+      "skill_id": "function-health",
+      "status": "available"
+    },
+    {
+      "config_key": "gmail",
+      "skill_id": "gmail",
+      "status": "available"
+    },
+    {
+      "config_key": "google_calendar",
+      "skill_id": "google-calendar",
+      "status": "available"
+    },
+    {
+      "config_key": "google_contacts",
+      "skill_id": "google-contacts",
+      "status": "available"
+    },
+    {
+      "config_key": "google_docs",
+      "skill_id": "google-docs",
+      "status": "available"
+    },
+    {
+      "config_key": "google_drive",
+      "skill_id": "google-drive",
+      "status": "available"
+    },
+    {
+      "config_key": "google_forms",
+      "skill_id": "google-forms",
+      "status": "available"
+    },
+    {
+      "config_key": "google_sheets",
+      "skill_id": "google-sheets",
+      "status": "available"
+    },
+    {
+      "config_key": "google_slides",
+      "skill_id": "google-slides",
+      "status": "available"
+    },
+    {
+      "config_key": "google_tasks",
+      "skill_id": "google-tasks",
+      "status": "available"
+    },
+    {
+      "config_key": "granola",
+      "skill_id": "granola",
+      "status": "available"
+    },
+    {
+      "config_key": "healthex",
+      "skill_id": "healthex",
+      "status": "available"
+    },
+    {
+      "config_key": "instagram",
+      "skill_id": "instagram",
+      "status": "available"
+    },
+    {
+      "config_key": "instagram_messages",
+      "skill_id": "instagram-messages",
+      "status": "available"
+    },
+    {
+      "config_key": "messenger_read",
+      "skill_id": "messenger",
+      "note": "config key does not match the directory name",
+      "status": "available"
+    },
+    {
+      "config_key": "notion",
+      "skill_id": "notion",
+      "status": "available"
+    },
+    {
+      "config_key": "opentable",
+      "skill_id": "opentable",
+      "status": "available"
+    },
+    {
+      "config_key": "outlook_calendar",
+      "skill_id": "outlook-calendar",
+      "status": "available"
+    },
+    {
+      "config_key": "outlook_contacts",
+      "skill_id": "outlook-contacts",
+      "status": "available"
+    },
+    {
+      "config_key": "outlook_mail",
+      "skill_id": "outlook-mail",
+      "status": "available"
+    },
+    {
+      "config_key": "peloton",
+      "skill_id": "peloton",
+      "status": "available"
+    },
+    {
+      "config_key": "philips_hue",
+      "skill_id": "philips-hue",
+      "status": "available"
+    },
+    {
+      "config_key": "plaid",
+      "skill_id": "plaid",
+      "status": "available"
+    },
+    {
+      "config_key": "printify",
+      "skill_id": "printify",
+      "status": "available"
+    },
+    {
+      "config_key": "spotify",
+      "skill_id": "spotify",
+      "status": "available"
+    },
+    {
+      "config_key": "tessie",
+      "skill_id": "tessie",
+      "status": "available"
+    },
+    {
+      "config_key": "threads",
+      "skill_id": "threads",
+      "status": "available"
+    },
+    {
+      "config_key": "threads_messages",
+      "skill_id": "threads-messages",
+      "status": "available"
+    },
+    {
+      "config_key": "withings",
+      "skill_id": "withings",
+      "status": "available"
+    }
+  ],
+  "availability_unmatched": [],
+  "skills_without_availability_entry": [
+    "apple-healthkit",
+    "artifacts/document",
+    "artifacts/markdown",
+    "artifacts/pdf",
+    "artifacts/presentation",
+    "artifacts/spreadsheet",
+    "artifacts/testing",
+    "booking",
+    "device-data",
+    "duffel",
+    "flightaware",
+    "forget",
+    "generate_podcast",
+    "goals",
+    "google-health-connect",
+    "image-search",
+    "magic-moment",
+    "media-library",
+    "muse-early-access",
+    "muse-feedback",
+    "muse-mail",
+    "muse_db",
+    "places-search",
+    "self-awareness",
+    "share-ideas",
+    "shopping",
+    "skill-creator",
+    "subscription-status",
+    "tailscale",
+    "ticketmaster",
+    "travel-planning",
+    "tts",
+    "voice-design",
+    "voice-selector",
+    "wearable-device-skills",
+    "wearables-comms",
+    "wide-research"
+  ],
+  "channel_scope_names_absent_from_this_tree": [
+    "arlo",
+    "asana",
+    "audio_notes_read",
+    "box",
+    "canva",
+    "documents",
+    "dropbox",
+    "evernote",
+    "facebook-cli-internal",
+    "health",
+    "instacart",
+    "klaviyo",
+    "linear",
+    "lovable",
+    "meta-ads",
+    "nutrition",
+    "polymarket",
+    "price-tracker",
+    "quickbooks",
+    "replit",
+    "ring",
+    "shopify",
+    "slack",
+    "social-competitor-analysis",
+    "social-content-performance",
+    "square",
+    "vercel",
+    "whatsapp",
+    "zapier",
+    "zoom"
+  ]
+}
