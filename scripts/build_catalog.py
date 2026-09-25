@@ -121,6 +121,35 @@ ALIASES = {
 }
 
 
+def block_scalar(lines: list[str], start: int, folded: bool) -> str:
+    chunks: list[list[str]] = [[]]
+    for line in lines[start:]:
+        if line.strip() == "":
+            chunks.append([])
+            continue
+        if not line.startswith((" ", "\t")):
+            break
+        chunks[-1].append(line.strip())
+    parts = [" ".join(chunk) if folded else "\n".join(chunk) for chunk in chunks if chunk]
+    joiner = " " if folded else "\n"
+    return joiner.join(parts).strip()
+
+
+def frontmatter_value(block: str, key: str) -> str | None:
+    lines = block.splitlines()
+    for index, line in enumerate(lines):
+        match = re.match(rf"^{key}:\s*(.*)$", line)
+        if not match:
+            continue
+        raw = match.group(1).strip()
+        if raw in {">", ">-", ">+"}:
+            return block_scalar(lines, index + 1, folded=True)
+        if raw in {"|", "|-", "|+"}:
+            return block_scalar(lines, index + 1, folded=False)
+        return raw.strip('"').strip("'")
+    return None
+
+
 def parse_frontmatter(text: str) -> dict:
     if not text.startswith("---\n"):
         return {}
@@ -130,10 +159,9 @@ def parse_frontmatter(text: str) -> dict:
     block = text[4:end]
     data = {}
     for key in ("name", "description", "icon", "title", "category"):
-        match = re.search(rf"^{key}:\s*(.*)$", block, re.M)
-        if not match:
-            continue
-        data[key] = match.group(1).strip().strip('"').strip("'")
+        value = frontmatter_value(block, key)
+        if value is not None:
+            data[key] = value
     data["include_in_prompt"] = bool(
         re.search(r"includeInPrompt[\"'\s:]*true", block)
     )
@@ -245,7 +273,10 @@ def availability(records):
 def render_index(records, aliases) -> str:
     by_group = {name: [] for name in GROUPS}
     for item in records:
-        by_group[item["group"]].append(item)
+        group = item["group"]
+        if group not in by_group:
+            continue
+        by_group[group].append(item)
     lines = [
         "# 技能索引",
         "",
@@ -288,15 +319,19 @@ def main() -> int:
     for item in records:
         if not item["name"] or not item["description"]:
             problems.append(f"{item['id']} is missing name or description")
+        elif item["description"] in {">", ">-", ">+", "|", "|-", "|+"}:
+            problems.append(f"{item['id']} description was not unfolded")
     for alias, target in ALIASES.items():
         link = SKILLS / alias / "SKILL.md"
+        expected = (SKILLS / target / "SKILL.md").resolve()
         if not link.is_symlink():
             problems.append(f"{alias}/SKILL.md is not a symlink")
-            continue
-        if link.read_text(encoding="utf-8")[:1] == "-":
-            pass
-        if target not in seen:
-            problems.append(f"alias {alias} points at missing {target}")
+        elif link.resolve() != expected:
+            problems.append(f"{alias}/SKILL.md points at {link.resolve()}, not {expected}")
+        manifest = SKILLS / alias / "manifest.yaml"
+        expected_manifest = SKILLS / target / "manifest.yaml"
+        if manifest.is_symlink() and manifest.resolve() != expected_manifest.resolve():
+            problems.append(f"{alias}/manifest.yaml does not point at {target}")
     mapped, unmatched, unconfigured = availability(records)
     scope_only = sorted(scope_names(SCOPES.read_text(encoding="utf-8")) - seen)
     catalog = {
@@ -315,6 +350,10 @@ def main() -> int:
         "channel_scope_names_absent_from_this_tree": scope_only,
     }
     text = json.dumps(catalog, ensure_ascii=False, indent=2) + "\n"
+    if problems:
+        for problem in problems:
+            print(problem, file=sys.stderr)
+        return 1
     index = render_index(records, ALIASES)
     if "--check" in sys.argv:
         same = OUT_JSON.read_text(encoding="utf-8") == text and OUT_INDEX.read_text(

@@ -109,7 +109,7 @@
 | [tailscale](../skills/tailscale/SKILL.md) |  |  |  | Set up Muse's built-in Tailscale connector, join a tailnet or Headscale network, check status, and reach private machines through the TCP tunnel proxy. Read for Tailscale, VPN, MagicDNS, network egress, exit-node, or browser routing questions and supported limits. |
 | [tessie](../skills/tessie/SKILL.md) |  | 有 |  | Monitor a Tesla vehicle, inspect live state, and run explicit Tessie command endpoints. |
 | [wearable-device-skills](../skills/wearable-device-skills/SKILL.md) | 是 |  |  | Use when the user asks to discover, inspect, or invoke an agentic capability dynamically published by a paired phone or wearable, including device controls, app actions, camera or media actions, and smart-home actions. |
-| [wearables-comms](../skills/wearables-comms/SKILL.md) | 是 |  |  | >- |
+| [wearables-comms](../skills/wearables-comms/SKILL.md) | 是 |  |  | Required for every call or text-message request originating on a wearable: resolve named recipients from synced device contacts and invoke the originating wearable, not a paired phone. |
 
 ## Muse 产品操作
 
