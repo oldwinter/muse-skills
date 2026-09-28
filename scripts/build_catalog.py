@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Build catalog/skills.json and catalog/INDEX.md from skills/."""
 
+import argparse
 import json
 import re
 import sys
@@ -307,7 +308,16 @@ def render_index(records, aliases) -> str:
     return "\n".join(lines)
 
 
-def main() -> int:
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(
+        description="Build catalog/skills.json and catalog/INDEX.md from skills/."
+    )
+    parser.add_argument(
+        "--check",
+        action="store_true",
+        help="compare the generated catalog with catalog/ without writing",
+    )
+    args = parser.parse_args(argv)
     records, seen, group_of = skill_records()
     missing_group = sorted(seen - set(group_of))
     extra_group = sorted(set(group_of) - seen)
@@ -369,7 +379,7 @@ def main() -> int:
             print(problem, file=sys.stderr)
         return 1
     index = render_index(records, ALIASES)
-    if "--check" in sys.argv:
+    if args.check:
         same = OUT_JSON.read_text(encoding="utf-8") == text and OUT_INDEX.read_text(
             encoding="utf-8"
         ) == index
