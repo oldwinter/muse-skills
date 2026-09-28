@@ -330,8 +330,22 @@ def main() -> int:
             problems.append(f"{alias}/SKILL.md points at {link.resolve()}, not {expected}")
         manifest = SKILLS / alias / "manifest.yaml"
         expected_manifest = SKILLS / target / "manifest.yaml"
-        if manifest.is_symlink() and manifest.resolve() != expected_manifest.resolve():
-            problems.append(f"{alias}/manifest.yaml does not point at {target}")
+        if expected_manifest.is_file() and not manifest.is_symlink():
+            reason = "missing" if not manifest.exists() else "not a symlink"
+            problems.append(
+                f"{alias}/manifest.yaml is {reason}; "
+                f"expected a symlink to {target}/manifest.yaml"
+            )
+        elif manifest.is_symlink():
+            if not manifest.exists():
+                problems.append(
+                    f"{alias}/manifest.yaml is a dangling symlink; "
+                    f"expected {target}/manifest.yaml"
+                )
+            elif manifest.resolve() != expected_manifest.resolve():
+                problems.append(
+                    f"{alias}/manifest.yaml does not point at {target}/manifest.yaml"
+                )
     mapped, unmatched, unconfigured = availability(records)
     scope_only = sorted(scope_names(SCOPES.read_text(encoding="utf-8")) - seen)
     catalog = {
