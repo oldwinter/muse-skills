@@ -23,6 +23,21 @@ class CatalogParsingTests(unittest.TestCase):
             with self.subTest(block=block):
                 self.assertFalse(build_catalog.include_in_prompt(block))
 
+    def test_frontmatter_accepts_bom_and_cross_platform_line_endings(self):
+        for separator in (chr(10), chr(13) + chr(10)):
+            for bom in ("", chr(0xFEFF)):
+                with self.subTest(separator=repr(separator), bom=bool(bom)):
+                    text = bom + separator.join(
+                        ["---", "name: demo", "description: Demo", "---", "# Body"]
+                    )
+                    parsed = build_catalog.parse_frontmatter(text)
+                    self.assertEqual(parsed["name"], "demo")
+                    self.assertEqual(parsed["description"], "Demo")
+        self.assertEqual(
+            build_catalog.parse_frontmatter("---" + chr(10) + "name: demo"),
+            {},
+        )
+
     def test_duplicate_group_assignments_are_rejected(self):
         groups = {
             "first": ["same-skill", "only-first"],

@@ -174,12 +174,14 @@ def include_in_prompt(block: str) -> bool:
     return False
 
 def parse_frontmatter(text: str) -> dict:
-    if not text.startswith("---\n"):
+    lines = text.removeprefix(chr(0xFEFF)).splitlines()
+    if not lines or lines[0] != "---":
         return {}
-    end = text.find("\n---\n", 4)
-    if end == -1:
+    try:
+        end = lines.index("---", 1)
+    except ValueError:
         return {}
-    block = text[4:end]
+    block = chr(10).join(lines[1:end])
     data = {}
     for key in ("name", "description", "icon", "title", "category"):
         value = frontmatter_value(block, key)
@@ -187,7 +189,6 @@ def parse_frontmatter(text: str) -> dict:
             data[key] = value
     data["include_in_prompt"] = include_in_prompt(block)
     return data
-
 
 def parse_skills_yaml(text: str) -> dict:
     entries = {}
