@@ -223,11 +223,18 @@ def group_metadata_problems() -> list[str]:
     for group, skill_ids in GROUPS.items():
         for skill_id in skill_ids:
             assignments.setdefault(skill_id, []).append(group)
-    return [
+    problems = [
         f"{skill_id} is assigned to multiple groups: {', '.join(groups)}"
         for skill_id, groups in sorted(assignments.items())
         if len(groups) > 1
     ]
+    missing_titles = sorted(set(GROUPS) - set(GROUP_TITLES))
+    extra_titles = sorted(set(GROUP_TITLES) - set(GROUPS))
+    if missing_titles:
+        problems.append(f"groups without titles: {', '.join(missing_titles)}")
+    if extra_titles:
+        problems.append(f"titles without groups: {', '.join(extra_titles)}")
+    return problems
 
 
 def skill_records():

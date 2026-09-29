@@ -16,6 +16,18 @@ class CatalogParsingTests(unittest.TestCase):
                 ["same-skill is assigned to multiple groups: first, second"],
             )
 
+    def test_group_titles_must_match_group_keys(self):
+        groups = {"first": ["one"], "second": ["two"]}
+        titles = {"first": "First", "orphan": "Orphan"}
+        with patch.multiple(build_catalog, GROUPS=groups, GROUP_TITLES=titles):
+            self.assertEqual(
+                build_catalog.group_metadata_problems(),
+                [
+                    "groups without titles: second",
+                    "titles without groups: orphan",
+                ],
+            )
+
 
 if __name__ == "__main__":
     unittest.main()
