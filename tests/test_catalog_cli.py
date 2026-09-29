@@ -103,6 +103,25 @@ class CatalogCliTest(unittest.TestCase):
         self.assertTrue((self.catalog / "skills.json").is_file())
         self.assertTrue((self.catalog / "INDEX.md").is_file())
 
+    def test_symlinked_outputs_are_rejected_without_writes(self):
+        outside = self.work / "outside-target"
+        for name in ("skills.json", "INDEX.md"):
+            with self.subTest(name=name):
+                self.stamp_sentinels()
+                outside.write_bytes(SENTINEL)
+                output = self.catalog / name
+                output.unlink()
+                output.symlink_to(outside)
+                result = self.run_cli()
+                self.assertEqual(result.returncode, 1)
+                self.assertIn("symlinked catalog output", result.stderr)
+                self.assertEqual(outside.read_bytes(), SENTINEL)
+                other = "INDEX.md" if name == "skills.json" else "skills.json"
+                self.assertEqual((self.catalog / other).read_bytes(), SENTINEL)
+                output.unlink()
+        outside.unlink()
+        self.stamp_sentinels()
+
     def test_rebuild_matches_committed_catalog_byte_for_byte(self):
         self.stamp_sentinels()
         result = self.run_cli()

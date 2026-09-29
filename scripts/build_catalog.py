@@ -210,6 +210,14 @@ def scope_names(text: str) -> set:
     return names
 
 
+def output_path_problems() -> list[str]:
+    problems = []
+    for path in (OUT_JSON, OUT_INDEX):
+        if path.is_symlink():
+            problems.append(f"refusing symlinked catalog output: {path}")
+    return problems
+
+
 def skill_records():
     group_of = {path: name for name, paths in GROUPS.items() for path in paths}
     records = []
@@ -321,7 +329,7 @@ def main(argv: list[str] | None = None) -> int:
     records, seen, group_of = skill_records()
     missing_group = sorted(seen - set(group_of))
     extra_group = sorted(set(group_of) - seen)
-    problems = []
+    problems = output_path_problems()
     if missing_group:
         problems.append(f"skills without a group: {', '.join(missing_group)}")
     if extra_group:
