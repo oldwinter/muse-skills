@@ -38,6 +38,29 @@ class CatalogParsingTests(unittest.TestCase):
             {},
         )
 
+    def test_block_scalars_preserve_paragraph_breaks(self):
+        folded = chr(10).join(
+            ["description: >", "  First paragraph.", "", "  Second paragraph."]
+        )
+        multiple = chr(10).join(
+            ["description: >", "  First paragraph.", "", "", "  Second paragraph."]
+        )
+        literal = chr(10).join(
+            ["description: |", "  First paragraph.", "", "  Second paragraph."]
+        )
+        self.assertEqual(
+            build_catalog.frontmatter_value(folded, "description"),
+            "First paragraph." + chr(10) + "Second paragraph.",
+        )
+        self.assertEqual(
+            build_catalog.frontmatter_value(multiple, "description"),
+            "First paragraph." + chr(10) * 2 + "Second paragraph.",
+        )
+        self.assertEqual(
+            build_catalog.frontmatter_value(literal, "description"),
+            "First paragraph." + chr(10) * 2 + "Second paragraph.",
+        )
+
     def test_duplicate_group_assignments_are_rejected(self):
         groups = {
             "first": ["same-skill", "only-first"],

@@ -123,18 +123,25 @@ ALIASES = {
 
 
 def block_scalar(lines: list[str], start: int, folded: bool) -> str:
-    chunks: list[list[str]] = [[]]
+    values = []
     for line in lines[start:]:
         if line.strip() == "":
-            chunks.append([])
+            values.append(None)
             continue
         if not line.startswith((" ", "\t")):
             break
-        chunks[-1].append(line.strip())
-    parts = [" ".join(chunk) if folded else "\n".join(chunk) for chunk in chunks if chunk]
-    joiner = " " if folded else "\n"
-    return joiner.join(parts).strip()
-
+        values.append(line.strip())
+    if not folded:
+        return chr(10).join("" if value is None else value for value in values).strip()
+    result = []
+    for value in values:
+        if value is None:
+            result.append(chr(10))
+        else:
+            if result and not result[-1].endswith(chr(10)):
+                result.append(" ")
+            result.append(value)
+    return "".join(result).strip()
 
 def frontmatter_value(block: str, key: str) -> str | None:
     lines = block.splitlines()
