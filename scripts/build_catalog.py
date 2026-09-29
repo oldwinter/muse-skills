@@ -218,6 +218,18 @@ def output_path_problems() -> list[str]:
     return problems
 
 
+def group_metadata_problems() -> list[str]:
+    assignments = {}
+    for group, skill_ids in GROUPS.items():
+        for skill_id in skill_ids:
+            assignments.setdefault(skill_id, []).append(group)
+    return [
+        f"{skill_id} is assigned to multiple groups: {', '.join(groups)}"
+        for skill_id, groups in sorted(assignments.items())
+        if len(groups) > 1
+    ]
+
+
 def skill_records():
     group_of = {path: name for name, paths in GROUPS.items() for path in paths}
     records = []
@@ -329,7 +341,7 @@ def main(argv: list[str] | None = None) -> int:
     records, seen, group_of = skill_records()
     missing_group = sorted(seen - set(group_of))
     extra_group = sorted(set(group_of) - seen)
-    problems = output_path_problems()
+    problems = output_path_problems() + group_metadata_problems()
     if missing_group:
         problems.append(f"skills without a group: {', '.join(missing_group)}")
     if extra_group:
