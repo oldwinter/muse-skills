@@ -61,6 +61,26 @@ class CatalogParsingTests(unittest.TestCase):
             "First paragraph." + chr(10) * 2 + "Second paragraph.",
         )
 
+    def test_availability_parser_stays_inside_entries_section(self):
+        text = chr(10).join(
+            [
+                "version: 1",
+                "before:",
+                "  ignored_before:",
+                "    status: disabled",
+                "entries:",
+                "  alpha:",
+                "    status: available",
+                "after:",
+                "  ignored_after:",
+                "    status: disabled",
+            ]
+        )
+        self.assertEqual(
+            build_catalog.parse_skills_yaml(text),
+            {"alpha": {"status": "available"}},
+        )
+
     def test_duplicate_group_assignments_are_rejected(self):
         groups = {
             "first": ["same-skill", "only-first"],

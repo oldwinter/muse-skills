@@ -200,7 +200,19 @@ def parse_frontmatter(text: str) -> dict:
 def parse_skills_yaml(text: str) -> dict:
     entries = {}
     current = None
+    in_entries = False
     for line in text.splitlines():
+        stripped = line.strip()
+        if not line.startswith((" ", "\t")):
+            current = None
+            if stripped == "entries:":
+                in_entries = True
+                continue
+            if in_entries and stripped and not stripped.startswith("#"):
+                break
+            continue
+        if not in_entries:
+            continue
         key = re.match(r"^  ([A-Za-z0-9_]+):\s*$", line)
         if key:
             current = key.group(1)
@@ -210,7 +222,6 @@ def parse_skills_yaml(text: str) -> dict:
         if status and current:
             entries[current]["status"] = status.group(1)
     return entries
-
 
 def manifest_stats(text: str) -> dict:
     connector = ""
