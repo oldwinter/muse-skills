@@ -100,7 +100,8 @@ class CatalogParsingTests(unittest.TestCase):
             "first": ["same-skill", "only-first"],
             "second": ["same-skill", "only-second"],
         }
-        with patch.object(build_catalog, "GROUPS", groups):
+        titles = {"first": "First", "second": "Second"}
+        with patch.multiple(build_catalog, GROUPS=groups, GROUP_TITLES=titles):
             self.assertEqual(
                 build_catalog.group_metadata_problems(),
                 ["same-skill is assigned to multiple groups: first, second"],
