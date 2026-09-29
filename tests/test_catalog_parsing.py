@@ -81,6 +81,20 @@ class CatalogParsingTests(unittest.TestCase):
             {"alpha": {"status": "available"}},
         )
 
+    def test_scope_parser_ignores_indented_comments_and_blank_lines(self):
+        text = chr(10).join(
+            [
+                "",
+                "  # indented comment words",
+                "prod real-skill another-skill",
+                "  ",
+            ]
+        )
+        self.assertEqual(
+            build_catalog.scope_names(text),
+            {"real-skill", "another-skill"},
+        )
+
     def test_duplicate_group_assignments_are_rejected(self):
         groups = {
             "first": ["same-skill", "only-first"],

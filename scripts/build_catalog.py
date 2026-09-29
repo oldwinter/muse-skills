@@ -242,9 +242,10 @@ def manifest_stats(text: str) -> dict:
 def scope_names(text: str) -> set:
     names = set()
     for line in text.splitlines():
-        if not line or line.startswith("#"):
+        stripped = line.strip()
+        if not stripped or stripped.startswith("#"):
             continue
-        parts = line.split()
+        parts = stripped.split()
         names.update(parts[1:])
     return names
 
