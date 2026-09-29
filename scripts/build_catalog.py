@@ -380,9 +380,12 @@ def main(argv: list[str] | None = None) -> int:
         return 1
     index = render_index(records, ALIASES)
     if args.check:
-        same = OUT_JSON.read_text(encoding="utf-8") == text and OUT_INDEX.read_text(
-            encoding="utf-8"
-        ) == index
+        same = (
+            OUT_JSON.is_file()
+            and OUT_INDEX.is_file()
+            and OUT_JSON.read_text(encoding="utf-8") == text
+            and OUT_INDEX.read_text(encoding="utf-8") == index
+        )
         if problems or not same:
             for problem in problems:
                 print(problem, file=sys.stderr)

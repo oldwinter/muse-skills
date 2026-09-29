@@ -74,6 +74,19 @@ class CatalogCliTest(unittest.TestCase):
         self.assertIn("stale", result.stderr)
         self.assert_sentinels_intact()
 
+    def test_check_reports_missing_outputs_as_stale_without_writes(self):
+        for missing in (("skills.json",), ("INDEX.md",), ("skills.json", "INDEX.md")):
+            with self.subTest(missing=missing):
+                self.stamp_sentinels()
+                for name in missing:
+                    (self.catalog / name).unlink()
+                result = self.run_cli("--check")
+                self.assertEqual(result.returncode, 1)
+                self.assertIn("stale", result.stderr)
+                for name in missing:
+                    self.assertFalse((self.catalog / name).exists())
+        self.stamp_sentinels()
+
     def test_rebuild_then_check_is_clean(self):
         self.stamp_sentinels()
         result = self.run_cli()
