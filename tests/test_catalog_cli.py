@@ -41,6 +41,7 @@ class CatalogCliTest(unittest.TestCase):
         )
 
     def stamp_sentinels(self):
+        self.catalog.mkdir(parents=True, exist_ok=True)
         (self.catalog / "skills.json").write_bytes(SENTINEL)
         (self.catalog / "INDEX.md").write_bytes(SENTINEL)
 
@@ -94,6 +95,13 @@ class CatalogCliTest(unittest.TestCase):
         check = self.run_cli("--check")
         self.assertEqual(check.returncode, 0, check.stderr)
         self.assertRegex(check.stdout, r"ok \d+ skills")
+
+    def test_rebuild_creates_missing_catalog_directory(self):
+        shutil.rmtree(self.catalog)
+        result = self.run_cli()
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertTrue((self.catalog / "skills.json").is_file())
+        self.assertTrue((self.catalog / "INDEX.md").is_file())
 
     def test_rebuild_matches_committed_catalog_byte_for_byte(self):
         self.stamp_sentinels()

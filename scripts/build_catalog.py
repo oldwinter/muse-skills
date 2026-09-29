@@ -398,6 +398,8 @@ def main(argv: list[str] | None = None) -> int:
         for problem in problems:
             print(problem, file=sys.stderr)
         return 1
+    OUT_JSON.parent.mkdir(parents=True, exist_ok=True)
+    OUT_INDEX.parent.mkdir(parents=True, exist_ok=True)
     OUT_JSON.write_text(text, encoding="utf-8")
     OUT_INDEX.write_text(index, encoding="utf-8")
     print(
