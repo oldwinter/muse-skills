@@ -151,6 +151,28 @@ def frontmatter_value(block: str, key: str) -> str | None:
     return None
 
 
+def include_in_prompt(block: str) -> bool:
+    for line in block.splitlines():
+        stripped = line.strip()
+        if not stripped or stripped.startswith("#"):
+            continue
+        if stripped == "includeInPrompt: true":
+            return True
+        if not stripped.startswith("metadata:"):
+            continue
+        payload = stripped.partition(":")[2].strip()
+        if not (payload.startswith("{") and payload.endswith("}")):
+            continue
+        for entry in payload[1:-1].split(","):
+            key, separator, value = entry.partition(":")
+            if (
+                separator
+                and key.strip().strip("\"'") == "includeInPrompt"
+                and value.strip() == "true"
+            ):
+                return True
+    return False
+
 def parse_frontmatter(text: str) -> dict:
     if not text.startswith("---\n"):
         return {}
@@ -163,9 +185,7 @@ def parse_frontmatter(text: str) -> dict:
         value = frontmatter_value(block, key)
         if value is not None:
             data[key] = value
-    data["include_in_prompt"] = bool(
-        re.search(r"includeInPrompt[\"'\s:]*true", block)
-    )
+    data["include_in_prompt"] = include_in_prompt(block)
     return data
 
 

@@ -5,6 +5,24 @@ from scripts import build_catalog
 
 
 class CatalogParsingTests(unittest.TestCase):
+    def test_include_in_prompt_requires_the_real_metadata_key(self):
+        true_cases = (
+            'metadata: { "includeInPrompt": true }',
+            "metadata:" + chr(10) + "  includeInPrompt: true",
+        )
+        false_cases = (
+            "# includeInPrompt: true",
+            "notincludeInPrompt: true",
+            'description: "includeInPrompt: true"',
+            'metadata: { "includeInPrompt": false }',
+        )
+        for block in true_cases:
+            with self.subTest(block=block):
+                self.assertTrue(build_catalog.include_in_prompt(block))
+        for block in false_cases:
+            with self.subTest(block=block):
+                self.assertFalse(build_catalog.include_in_prompt(block))
+
     def test_duplicate_group_assignments_are_rejected(self):
         groups = {
             "first": ["same-skill", "only-first"],
