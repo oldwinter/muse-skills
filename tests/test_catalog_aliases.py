@@ -59,6 +59,7 @@ class CatalogAliasTests(unittest.TestCase):
                 "social": list(self.manifest_aliases.values()),
                 "media": list(self.no_manifest_aliases.values()),
             },
+            GROUP_TITLES={"social": "Social", "media": "Media"},
         )
         globals_patch.start()
         self.addCleanup(globals_patch.stop)

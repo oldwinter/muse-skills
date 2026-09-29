@@ -41,6 +41,7 @@ class CatalogCliTest(unittest.TestCase):
         )
 
     def stamp_sentinels(self):
+        self.catalog.mkdir(parents=True, exist_ok=True)
         (self.catalog / "skills.json").write_bytes(SENTINEL)
         (self.catalog / "INDEX.md").write_bytes(SENTINEL)
 
@@ -74,6 +75,19 @@ class CatalogCliTest(unittest.TestCase):
         self.assertIn("stale", result.stderr)
         self.assert_sentinels_intact()
 
+    def test_check_reports_missing_outputs_as_stale_without_writes(self):
+        for missing in (("skills.json",), ("INDEX.md",), ("skills.json", "INDEX.md")):
+            with self.subTest(missing=missing):
+                self.stamp_sentinels()
+                for name in missing:
+                    (self.catalog / name).unlink()
+                result = self.run_cli("--check")
+                self.assertEqual(result.returncode, 1)
+                self.assertIn("stale", result.stderr)
+                for name in missing:
+                    self.assertFalse((self.catalog / name).exists())
+        self.stamp_sentinels()
+
     def test_rebuild_then_check_is_clean(self):
         self.stamp_sentinels()
         result = self.run_cli()
@@ -81,6 +95,32 @@ class CatalogCliTest(unittest.TestCase):
         check = self.run_cli("--check")
         self.assertEqual(check.returncode, 0, check.stderr)
         self.assertRegex(check.stdout, r"ok \d+ skills")
+
+    def test_rebuild_creates_missing_catalog_directory(self):
+        shutil.rmtree(self.catalog)
+        result = self.run_cli()
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertTrue((self.catalog / "skills.json").is_file())
+        self.assertTrue((self.catalog / "INDEX.md").is_file())
+
+    def test_symlinked_outputs_are_rejected_without_writes(self):
+        outside = self.work / "outside-target"
+        for name in ("skills.json", "INDEX.md"):
+            with self.subTest(name=name):
+                self.stamp_sentinels()
+                outside.write_bytes(SENTINEL)
+                output = self.catalog / name
+                output.unlink()
+                output.symlink_to(outside)
+                result = self.run_cli()
+                self.assertEqual(result.returncode, 1)
+                self.assertIn("symlinked catalog output", result.stderr)
+                self.assertEqual(outside.read_bytes(), SENTINEL)
+                other = "INDEX.md" if name == "skills.json" else "skills.json"
+                self.assertEqual((self.catalog / other).read_bytes(), SENTINEL)
+                output.unlink()
+        outside.unlink()
+        self.stamp_sentinels()
 
     def test_rebuild_matches_committed_catalog_byte_for_byte(self):
         self.stamp_sentinels()

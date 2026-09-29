@@ -123,18 +123,25 @@ ALIASES = {
 
 
 def block_scalar(lines: list[str], start: int, folded: bool) -> str:
-    chunks: list[list[str]] = [[]]
+    values = []
     for line in lines[start:]:
         if line.strip() == "":
-            chunks.append([])
+            values.append(None)
             continue
         if not line.startswith((" ", "\t")):
             break
-        chunks[-1].append(line.strip())
-    parts = [" ".join(chunk) if folded else "\n".join(chunk) for chunk in chunks if chunk]
-    joiner = " " if folded else "\n"
-    return joiner.join(parts).strip()
-
+        values.append(line.strip())
+    if not folded:
+        return chr(10).join("" if value is None else value for value in values).strip()
+    result = []
+    for value in values:
+        if value is None:
+            result.append(chr(10))
+        else:
+            if result and not result[-1].endswith(chr(10)):
+                result.append(" ")
+            result.append(value)
+    return "".join(result).strip()
 
 def frontmatter_value(block: str, key: str) -> str | None:
     lines = block.splitlines()
@@ -151,28 +158,61 @@ def frontmatter_value(block: str, key: str) -> str | None:
     return None
 
 
+def include_in_prompt(block: str) -> bool:
+    for line in block.splitlines():
+        stripped = line.strip()
+        if not stripped or stripped.startswith("#"):
+            continue
+        if stripped == "includeInPrompt: true":
+            return True
+        if not stripped.startswith("metadata:"):
+            continue
+        payload = stripped.partition(":")[2].strip()
+        if not (payload.startswith("{") and payload.endswith("}")):
+            continue
+        for entry in payload[1:-1].split(","):
+            key, separator, value = entry.partition(":")
+            if (
+                separator
+                and key.strip().strip("\"'") == "includeInPrompt"
+                and value.strip() == "true"
+            ):
+                return True
+    return False
+
 def parse_frontmatter(text: str) -> dict:
-    if not text.startswith("---\n"):
+    lines = text.removeprefix(chr(0xFEFF)).splitlines()
+    if not lines or lines[0] != "---":
         return {}
-    end = text.find("\n---\n", 4)
-    if end == -1:
+    try:
+        end = lines.index("---", 1)
+    except ValueError:
         return {}
-    block = text[4:end]
+    block = chr(10).join(lines[1:end])
     data = {}
     for key in ("name", "description", "icon", "title", "category"):
         value = frontmatter_value(block, key)
         if value is not None:
             data[key] = value
-    data["include_in_prompt"] = bool(
-        re.search(r"includeInPrompt[\"'\s:]*true", block)
-    )
+    data["include_in_prompt"] = include_in_prompt(block)
     return data
-
 
 def parse_skills_yaml(text: str) -> dict:
     entries = {}
     current = None
+    in_entries = False
     for line in text.splitlines():
+        stripped = line.strip()
+        if not line.startswith((" ", "\t")):
+            current = None
+            if stripped == "entries:":
+                in_entries = True
+                continue
+            if in_entries and stripped and not stripped.startswith("#"):
+                break
+            continue
+        if not in_entries:
+            continue
         key = re.match(r"^  ([A-Za-z0-9_]+):\s*$", line)
         if key:
             current = key.group(1)
@@ -182,7 +222,6 @@ def parse_skills_yaml(text: str) -> dict:
         if status and current:
             entries[current]["status"] = status.group(1)
     return entries
-
 
 def manifest_stats(text: str) -> dict:
     connector = ""
@@ -203,11 +242,39 @@ def manifest_stats(text: str) -> dict:
 def scope_names(text: str) -> set:
     names = set()
     for line in text.splitlines():
-        if not line or line.startswith("#"):
+        stripped = line.strip()
+        if not stripped or stripped.startswith("#"):
             continue
-        parts = line.split()
+        parts = stripped.split()
         names.update(parts[1:])
     return names
+
+
+def output_path_problems() -> list[str]:
+    problems = []
+    for path in (OUT_JSON, OUT_INDEX):
+        if path.is_symlink():
+            problems.append(f"refusing symlinked catalog output: {path}")
+    return problems
+
+
+def group_metadata_problems() -> list[str]:
+    assignments = {}
+    for group, skill_ids in GROUPS.items():
+        for skill_id in skill_ids:
+            assignments.setdefault(skill_id, []).append(group)
+    problems = [
+        f"{skill_id} is assigned to multiple groups: {', '.join(groups)}"
+        for skill_id, groups in sorted(assignments.items())
+        if len(groups) > 1
+    ]
+    missing_titles = sorted(set(GROUPS) - set(GROUP_TITLES))
+    extra_titles = sorted(set(GROUP_TITLES) - set(GROUPS))
+    if missing_titles:
+        problems.append(f"groups without titles: {', '.join(missing_titles)}")
+    if extra_titles:
+        problems.append(f"titles without groups: {', '.join(extra_titles)}")
+    return problems
 
 
 def skill_records():
@@ -321,7 +388,7 @@ def main(argv: list[str] | None = None) -> int:
     records, seen, group_of = skill_records()
     missing_group = sorted(seen - set(group_of))
     extra_group = sorted(set(group_of) - seen)
-    problems = []
+    problems = output_path_problems() + group_metadata_problems()
     if missing_group:
         problems.append(f"skills without a group: {', '.join(missing_group)}")
     if extra_group:
@@ -380,9 +447,12 @@ def main(argv: list[str] | None = None) -> int:
         return 1
     index = render_index(records, ALIASES)
     if args.check:
-        same = OUT_JSON.read_text(encoding="utf-8") == text and OUT_INDEX.read_text(
-            encoding="utf-8"
-        ) == index
+        same = (
+            OUT_JSON.is_file()
+            and OUT_INDEX.is_file()
+            and OUT_JSON.read_text(encoding="utf-8") == text
+            and OUT_INDEX.read_text(encoding="utf-8") == index
+        )
         if problems or not same:
             for problem in problems:
                 print(problem, file=sys.stderr)
@@ -395,6 +465,8 @@ def main(argv: list[str] | None = None) -> int:
         for problem in problems:
             print(problem, file=sys.stderr)
         return 1
+    OUT_JSON.parent.mkdir(parents=True, exist_ok=True)
+    OUT_INDEX.parent.mkdir(parents=True, exist_ok=True)
     OUT_JSON.write_text(text, encoding="utf-8")
     OUT_INDEX.write_text(index, encoding="utf-8")
     print(
